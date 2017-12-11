@@ -69,6 +69,7 @@ app.post('/tickets', function (req, res) {
         } else {
             console.log(params.Item.ticketId)
             filename = params.Item.ticketId +".png";
+            snsMessage ='{"toEmail":"conner0987@hotmail.com","id": "'+params.Item.ticketId+'"}';
             s3.putObject({
                 Body: body,
                 Key: filename,
@@ -79,7 +80,21 @@ app.post('/tickets', function (req, res) {
                     console.log("error downloading image to s3");
                 } else {
                     console.log("success uploading to s3");
-                    res.json({ ticketId, username });
+                    var sns = new AWS.SNS();
+
+                    sns.publish({
+                      Message: snsMessage,
+                      TopicArn: 'arn:aws:sns:us-east-1:112028903682:sendMail'
+                    }, function(err, data) {
+                      if (err) {
+                        console.log(err.stack);
+                        return;
+                      }
+                      console.log('push sent');
+                      console.log(data);
+                      res.json({ ticketId, username });
+                    });
+
                 }
             });
         }

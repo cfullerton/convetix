@@ -30,6 +30,20 @@ provider:
              - Ref: ServerlessDeploymentBucket
     -  Effect: "Allow"
        Action:
+         - logs:CreateLogGroup
+         - logs:CreateLogGroup
+         - logs:CreateLogStream
+         - logs:PutLogEvents
+         - ses:SendEmail
+         - ses:SendRawEmail
+       Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "SNS:Publish"
+      Resource: "arn:aws:sns:us-east-1:112028903682:sendMail"
+
+    -  Effect: "Allow"
+       Action:
          - "s3:PutObject"
        Resource:
          Fn::Join:
@@ -56,7 +70,10 @@ functions:
     handler: writeBarcode.handler
     events:
       - http: 'GET /write-barcode/'
-
+  sendEmail:
+    handler: sendEmail.handler
+    events:
+      - sns: sendMail
 resources:
   Resources:
     ticketsDynamoDBTable:
