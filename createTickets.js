@@ -69,7 +69,7 @@ app.post('/tickets', function (req, res) {
         } else {
             console.log(params.Item.ticketId)
             filename = params.Item.ticketId +".png";
-            snsMessage ='{"toEmail":"conner0987@hotmail.com","id": "'+params.Item.ticketId+'"}';
+            snsMessage ='{"toEmail":"'+ params.Item.username +'","id": "'+params.Item.ticketId+'"}';
             s3.putObject({
                 Body: body,
                 Key: filename,

@@ -6,6 +6,8 @@ var ses = new aws.SES({
 exports.handler = function(event, context) {
   var message = JSON.parse(event.Records[0].Sns.Message);
     console.log(message);
+    var attachmentPath = "https://s3.amazonaws.com/barcode-tickets-s3/"+message.id+".png"
+    var html='This is your ticket <img src="'+attachmentPath+'"/>'
     var eParams = {
         Destination: {
             ToAddresses: [message.toEmail]
@@ -14,11 +16,15 @@ exports.handler = function(event, context) {
             Body: {
                 Text: {
                     Data: message.id
+                },
+                Html:{
+                  Data:html
                 }
             },
             Subject: {
                 Data: "Ticket From convetix"
             }
+
         },
         Source: "cfullerton@convetix.com"
     };
