@@ -1,0 +1,80 @@
+service: my-express-application
+plugins:
+  - serverless-offline
+custom:
+  tableName: 'tickets-table-${self:provider.stage}'
+  bcs3: 'barcode-tickets-s3'
+provider:
+  name: aws
+  runtime: nodejs6.10
+  stage: dev
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - { "Fn::GetAtt": ["ticketsDynamoDBTable", "Arn" ] }
+    -  Effect: "Allow"
+       Action:
+         - "s3:ListBucket"
+       Resource:
+         Fn::Join:
+           - ""
+           - - "arn:aws:s3:::"
+             - Ref: ServerlessDeploymentBucket
+    -  Effect: "Allow"
+       Action:
+         - "s3:PutObject"
+       Resource:
+         Fn::Join:
+           - ""
+           - - "arn:aws:s3:::"
+             - Ref: ServerlessDeploymentBucket
+             - "/*"
+  environment:
+    TICKET_TABLE: ${self:custom.tableName}
+    BC_S3: ${self:custom.bcs3}
+
+functions:
+  app:
+    handler: index.handler
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'
+  createTicket:
+    handler: createTickets.handler
+    events:
+      - http: 'GET /tickets/{proxy+}'
+      - http: 'POST /tickets'
+  writeBarcode:
+    handler: writeBarcode.handler
+    events:
+      - http: 'GET /write-barcode/'
+
+resources:
+  Resources:
+    ticketsDynamoDBTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: ticketId
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: ticketId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.tableName}
+    barcodeS3:
+      Type: 'AWS::S3::Bucket'
+      Properties:
+        BucketName: ${self:custom.bcs3}

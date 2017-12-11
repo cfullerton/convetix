@@ -1,0 +1,24 @@
+{
+  "name": "convetix",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.167.0",
+    "body-parser": "^1.18.2",
+    "bwip-js": "^1.6.2",
+    "express": "^4.16.2",
+    "jsbarcode": "^3.8.0",
+    "request": "^2.83.0",
+    "serverless-http": "^1.5.2"
+  },
+  "devDependencies": {
+    "serverless-offline": "^3.16.0"
+  }
+}
