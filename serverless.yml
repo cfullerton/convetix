@@ -74,6 +74,10 @@ functions:
     handler: sendEmail.handler
     events:
       - sns: sendMail
+  charge:
+    handler: charge.handler
+    events:
+      - http: 'POST /charge'
 resources:
   Resources:
     ticketsDynamoDBTable:

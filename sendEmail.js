@@ -7,7 +7,7 @@ exports.handler = function(event, context) {
   var message = JSON.parse(event.Records[0].Sns.Message);
     console.log(message);
     var attachmentPath = "https://s3.amazonaws.com/barcode-tickets-s3/"+message.id+".png"
-    var html='This is your ticket <img src="'+attachmentPath+'"/>'
+    var html='This is your ticket to <br>Single Fellas Night<br> at:<br> Das Weiner Haus <br> <img src="'+attachmentPath+'"/>'
     var eParams = {
         Destination: {
             ToAddresses: [message.toEmail]

@@ -16,7 +16,8 @@
     "express": "^4.16.2",
     "jsbarcode": "^3.8.0",
     "request": "^2.83.0",
-    "serverless-http": "^1.5.2"
+    "serverless-http": "^1.5.2",
+    "stripe": "^5.4.0"
   },
   "devDependencies": {
     "serverless-offline": "^3.16.0"
