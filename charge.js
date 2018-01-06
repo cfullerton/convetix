@@ -9,6 +9,7 @@ venueId = "1";
 eventId = "1";
 app.use(require("body-parser").urlencoded({extended: false}));
 app.post("/charge", (req, res) => {
+  email = req.body.stripeEmail;
   console.log(req.body);
   let amount = 500;
   stripe.customers.create({
@@ -32,7 +33,7 @@ app.post("/charge", (req, res) => {
     request({
       url: "https://ufnrkytl70.execute-api.us-east-1.amazonaws.com/dev/tickets",
       method: "POST",
-      json: true,   // <--Very important!!!
+      json: true,
       body: snsMessage
     }, function (error, response, body){
       if(error){
@@ -42,7 +43,7 @@ app.post("/charge", (req, res) => {
         console.log("----------------------")
         console.log(response);
       }
-      res.send("email sent to" + body.stripeEmail)
+      res.send("email sent to" + email)
     });
 
   });

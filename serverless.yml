@@ -4,6 +4,7 @@ plugins:
 custom:
   tableName: 'tickets-table-${self:provider.stage}'
   bcs3: 'barcode-tickets-s3'
+  eventsTable: 'events-table-${self:provider.stage}'
 provider:
   name: aws
   runtime: nodejs6.10
@@ -54,18 +55,17 @@ provider:
   environment:
     TICKET_TABLE: ${self:custom.tableName}
     BC_S3: ${self:custom.bcs3}
-
+    EVENT_TABLE: ${self:custom.eventsTable}
 functions:
-  app:
-    handler: index.handler
-    events:
-      - http: ANY /
-      - http: 'ANY {proxy+}'
   createTicket:
     handler: createTickets.handler
     events:
       - http: 'GET /tickets/{proxy+}'
       - http: 'POST /tickets'
+  createEvent:
+    handler: createEvent.handler
+    events:
+      - http: 'POST /create-event'
   writeBarcode:
     handler: writeBarcode.handler
     events:
@@ -95,6 +95,21 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:custom.tableName}
+    eventsDynamoDBTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: eventId
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: eventId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.eventsTable}
     barcodeS3:
       Type: 'AWS::S3::Bucket'
       Properties:
