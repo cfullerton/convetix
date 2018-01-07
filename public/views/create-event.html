@@ -1,0 +1,33 @@
+<div class="container">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="title">Create An Event</h1>
+			<form novalidate>
+    Event Name:<br>
+    <input type="text" ng-model="event.name"><br>
+    event Date:<br>
+    <input type="date" ng-model="event.date">
+    <br><br>
+		Doors Time:<br>
+		<input type="time" ng-model="event.doors"><br>
+		Show Time:<br>
+		<input type="time" ng-model="event.show">
+		<br><br>
+		Description:<br>
+    <textarea ng-model="event.description"></textarea><br>
+  </form>
+	  <h2>Your Event:</h2>
+		<div>
+			<h1 class="title">{{event.name}}</h1>
+			<p>
+				doors:{{event.doors.getHours()}}:{{(event.doors.getMinutes()<10?'0':'') + event.doors.getMinutes()}}
+				<br>
+				show:{{event.show.getHours()}}:{{(event.show.getMinutes()<10?'0':'') + event.show.getMinutes()}}
+			</p>
+			<p>{{event.description}}</p>
+
+
+		</div>
+		</div>
+	</div>
+</div>

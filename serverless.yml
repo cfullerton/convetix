@@ -1,10 +1,14 @@
 service: my-express-application
 plugins:
   - serverless-offline
+  - serverless-finch
 custom:
   tableName: 'tickets-table-${self:provider.stage}'
   bcs3: 'barcode-tickets-s3'
   eventsTable: 'events-table-${self:provider.stage}'
+  client:
+    bucketName: convetix.com
+    distributionFolder: public
 provider:
   name: aws
   runtime: nodejs6.10
