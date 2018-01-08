@@ -4,17 +4,25 @@
 			<h1 class="title">Create An Event</h1>
 			<form novalidate>
     Event Name:<br>
-    <input type="text" ng-model="event.name"><br>
+    <input type="text" ng-model="event.eventName"><br>
     event Date:<br>
     <input type="date" ng-model="event.date">
     <br><br>
 		Doors Time:<br>
-		<input type="time" ng-model="event.doors"><br>
+		<input type="time" ng-model="event.doorTime"><br>
 		Show Time:<br>
-		<input type="time" ng-model="event.show">
+		<input type="time" ng-model="event.showTime">
 		<br><br>
 		Description:<br>
     <textarea ng-model="event.description"></textarea><br>
+		Image:<br>
+		<input type="text" ng-model="event.imageURL"><br>
+		Or Upload an Image:<br>
+		<input type="file"><br>
+		Ticket Types:
+		GA:<br>
+		Price: <input type="number" ng-model="event.ticketType.ga.price"> <br>
+		Quantity for sale: <input type="number" ng-model="event.ticketType.ga.quantity"> <br>
   </form>
 	  <h2>Your Event:</h2>
 		<div>

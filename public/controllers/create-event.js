@@ -1,5 +1,16 @@
+/*
+todo:
+- get venueID from session
+- image upload
+- add a ticket type
+*/
+
 webApp.controller('CreateController', ['$scope', function($scope){
-	$scope.foo = 'bar';
-	console.log($scope.foo)
-	$scope.event = {}
+	var venue = 2; //needs to come from the session
+	$scope.event = {
+		ticketType:{
+			ga:{}
+		},
+		venueId:venue,
+	}
 }]);
